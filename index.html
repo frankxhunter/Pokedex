@@ -5,33 +5,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex</title>
+    <link rel="icon" href="./source/pokeball.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 
 <body>
     <header class="header">
         <img src="source/logo.png" alt="pokemon">
+
+        <form id="barSearch_form">
+            <input type="text" name="input_filter" placeholder="Search for id or name of pokemon" class="input_submit" autocomplete="off">
+           <div class="form_buttons">
+            <button type="submit" name="btn_submit" id="" class="btn_submit">
+                <span class="material-symbols-outlined">
+                    search
+                    </span>
+            </button>
+            <button id="btn_cancel" type="button" class="hide btn_cancel">
+                <span class="material-symbols-outlined">
+                    close
+                    </span>
+            </button>
+           </div>
+        </form>
         <div class="bar">
             <a href="#">Pokemón</a>
             <a href="#">Ataques</a>
             <a href="#">Bayas</a>
-            <a href="#">Zonas</a>
 
         </div>
     </header>
     <div class="container">
-        <div class="pokemon">
-            <span class="name_pokemon">1-bulbasaur</span>
-            <div class="container_img">
-                <img class="img_pokemon" src="source/pokebola.png" alt="">
-            </div>
-        </div>
+        <!-- Aqui van todos los pokemones-->
     </div>
+
     <div class="container_dialg">
-        
+        <!-- Este es el contenedor de referencia -->
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="./main_script.js"></script>
+
 </body>
 
 </html>

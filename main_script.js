@@ -1,9 +1,11 @@
-const container = document.querySelector(".container")
-load = true;
+// Importando el resto de archivos js
+
+export const container = document.querySelector(".container");
+var load = true;
 const container_dialg = document.querySelector(".container_dialg")
-var position = 0
+export var position = 0
 
-
+// Esta funcion permite carga mas pokemones a partir de la posicion actual 
 const loadMore = (entries) => {
     load = false
     if (entries[0].isIntersecting) {
@@ -15,6 +17,7 @@ const loadMore = (entries) => {
                 const fragment = document.createDocumentFragment();
                 let pokemon = null;
                 result.forEach(element => {
+                    console.log(element)
                     let parts = element.url.split("/");
                     let num = parts[parts.length - 2];
                     pokemon = getPokemon(element.url, num, element.name);
@@ -31,6 +34,8 @@ const loadMore = (entries) => {
 
 const observer = new IntersectionObserver(loadMore);
 
+// Permite crear la estructura basico de un div de un pokemon
+
 const getPokemon = (urlImg, num, name) => {
     const pokemon = document.createElement("DIV");
     const name_pokemon = document.createElement("span");
@@ -43,54 +48,44 @@ const getPokemon = (urlImg, num, name) => {
     img.classList.add("img_pokemon")
 
     container_img.appendChild(img);
-    pokemon.appendChild(name_pokemon);
     pokemon.appendChild(container_img);
+    pokemon.appendChild(name_pokemon);
 
     pokemon.setAttribute("data-value", urlImg);
-    name_pokemon.textContent=`${num + "-" + name}`;
-    img.setAttribute("src", "source/pokebola.png")
+    name_pokemon.textContent = `${num + "-" + capitaliceFirstLetter(name)}`;
+    img.setAttribute("src", "source/pokeball.png")
     img.setAttribute("alt", urlImg);
 
     return pokemon
 }
-// axios.get("https://pokeapi.co/api/v2/pokemon?limit=40").then(
-//     response => {
-//         position+= 40
-//         let result = response.data.results;
-//         let html = "";
-//         result.forEach(element => {
-//             let parts = element.url.split("/");
-//             let num = parts[parts.length - 2];
-//             html += `
-//             <div class="pokemon" data-value="${element.url}" >
-//             <span class="name_pokemon">${num + "-" + element.name}</span>
-//             <div class="container_img"><img class="img_pokemon" alt="${element.url}" src="source/pokebola.png" ></div>
-//         </div>
-//             `
-//         });
-//         container.innerHTML = html
-//         loadImg();
-//         addEventDialg()
-//     })
-axios.get("https://pokeapi.co/api/v2/pokemon?limit=40").then(
-    response => {
-        position += 40
-        let result = response.data.results;
-        const fragment = document.createDocumentFragment();
-        let pokemon = null;
-        result.forEach(element => {
-            let parts = element.url.split("/");
-            let num = parts[parts.length - 2];
-            pokemon = getPokemon(element.url, num, element.name);
-            fragment.appendChild(pokemon)
-        });
-        observer.observe(pokemon)
-        container.appendChild(fragment);
-        loadImg();
-        addEventDialg()
-    })
+const capitaliceFirstLetter = (str)=>{
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
-loadImg = async () => {
+// Crea la primera carga de toda la informacion
+const firstLoad = () => {
+    axios.get("https://pokeapi.co/api/v2/pokemon?limit=40").then(
+        response => {
+            position += 40
+            let result = response.data.results;
+            const fragment = document.createDocumentFragment();
+            let pokemon = null;
+            result.forEach(element => {
+                let parts = element.url.split("/");
+                let num = parts[parts.length - 2];
+                pokemon = getPokemon(element.url, num, capitaliceFirstLetter(element.name));
+                fragment.appendChild(pokemon)
+            });
+            observer.observe(pokemon)
+            container.appendChild(fragment);
+            loadImg();
+            addEventDialg()
+        })
+}
+firstLoad();
+// Realiza la carga 
+// TODO corregir que no carge todo desde el principio
+const loadImg = async () => {
     const img_pokemons = document.querySelectorAll(".img_pokemon");
 
     img_pokemons.forEach((element) => {
@@ -102,7 +97,7 @@ loadImg = async () => {
     })
 }
 
-
+// Añade el evento de click para todos los pokemones
 function addEventDialg() {
     let pokemons = document.querySelectorAll(".pokemon");
     pokemons.forEach((e) => {
@@ -147,4 +142,58 @@ function addEventDialg() {
             })
         })
     })
+}
+
+// Bar Search ////////////////////////////////////////
+
+const formSearch = document.getElementById("barSearch_form");
+const input_search = formSearch.elements["input_filter"];
+const btn_submit = formSearch.elements["btn_submit"];
+const btn_cancel = document.getElementById("btn_cancel");
+
+// Agregar el evento de submit al formulario
+formSearch.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    doSearch();
+    showCancel();
+
+})
+
+btn_cancel.addEventListener("click",()=>{
+    container.innerHTML="";
+    showSubmit();
+    firstLoad();
+})
+
+const doSearch = ()=>{
+    var text = input_search.value;
+    if(text && text.trim().length > 0){
+        
+        container.innerHTML = "";
+        position = 0;
+    console.log(text)
+    const url = `https://pokeapi.co/api/v2/pokemon/${text.toLowerCase()}/`
+    axios.get(url).then((response)=>{
+        const data = response.data
+        console.log(data)
+        container.appendChild(getPokemon(url, data.id, data.name));
+        loadImg();
+        addEventDialg();
+    }).catch((err)=>{
+        container.innerHTML = `
+        <span style=" font-size: 40px; margin: auto;">Pokemon no encontrado 😓</span>
+        `
+    });
+    
+}
+}
+
+const showSubmit = ()=>{
+    btn_submit.classList.remove("hide");
+    btn_cancel.classList.add("hide");
+}
+
+const showCancel = ()=>{
+    btn_submit.classList.add("hide");
+    btn_cancel.classList.remove("hide");
 }
