@@ -16,7 +16,14 @@ body {
     align-items: center;
     justify-content: space-between;
 }
-.header img{
+.container_menu{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header img {
     width: 350px;
 }
 
@@ -32,12 +39,22 @@ body {
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+.menu_burger {
+    display: none;
+}
+
 .container {
     padding: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, 250px);
     align-items: center;
     justify-content: space-around;
+}
+
+.container2 {
+    display: flex;
+    padding: 25px;
+    justify-content: center;
 }
 
 .pokemon {
@@ -198,23 +215,94 @@ body {
     border: none;
     outline: none;
     font-size: 20px;
-    width: 90%;
+    width: 85%;
 }
 
 .form_buttons {
-    width: 10%;
+    width: 15%;
 
 }
 
-.form_buttons:hover{
+.form_buttons:hover {
     filter: brightness(0.2);
 
 }
-.form_buttons button{
+
+.form_buttons button {
     background: none;
     border: none;
 }
-.form_buttons button span{
-   font-size: 30px;
+
+.form_buttons button span {
+    font-size: 30px;
+}
+.mobile{
+    display: none;
+}
+.menu{
+    display: none;
 }
 
+
+@media screen and (max-width: 900px) {
+
+    .mobile_hide {
+        display: none !important;
+    }
+
+
+    .header img {
+        max-width: 70%;
+    }
+
+    .menu_burger {
+        display: flex;
+    }
+
+    .icon {
+        font-size: 40px !important;
+    }
+    .menu{
+        height: 100%;
+        width: 250px;
+        top: 0;
+        right: -250px;
+        background-color:  rgb(24, 24, 56);
+        z-index: 10;
+        display: flex;
+        position: fixed;
+        flex-direction: column;
+        transition: 1s;
+
+    }
+    .menu_appear{
+        transform: translateX(-100%);
+    }
+    #barSearch_form{
+        margin: 10px;
+        width: 80%;
+    }
+    .menu_title{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin: 5px;
+        margin-top: 15px;
+        margin-left: 15px;
+    }
+
+    .menu_title :first-child{
+        font-size: 40px;
+    }
+    hr{
+        margin: 10px 0;
+        border: 1.5px solid ;
+    }
+    .bar{
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+}

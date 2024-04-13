@@ -8,37 +8,64 @@
     <link rel="icon" href="./source/pokeball.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 
 <body>
     <header class="header">
         <img src="source/logo.png" alt="pokemon">
-
-        <form id="barSearch_form">
-            <input type="text" name="input_filter" placeholder="Search for id or name of pokemon" class="input_submit" autocomplete="off">
-           <div class="form_buttons">
-            <button type="submit" name="btn_submit" id="" class="btn_submit">
-                <span class="material-symbols-outlined">
-                    search
+        <div class="container_menu mobile_hide">
+            <div></div>
+            <form id="barSearch_form" >
+                <input type="text" name="input_filter" placeholder="Search for id or name of pokemon" class="input_submit"
+                    autocomplete="off">
+                <div class="form_buttons">
+                    <button type="submit" name="btn_submit" id="" class="btn_submit">
+                        <span class="material-symbols-outlined">
+                            search
+                        </span>
+                    </button>
+                    <button id="btn_cancel" type="button" class="hide btn_cancel">
+                        <span class="material-symbols-outlined">
+                            close
+                        </span>
+                    </button>
+                </div>
+            </form>
+            <div class="bar">
+                <a href="#">Pokemón</a>
+                <a href="#">Ataques</a>
+                <a href="#">Bayas</a>
+    
+            </div>
+        </div>
+    <!--Menu que se ve solo en dispotivos mobiles-->
+        <div class="menu_burger mobile">
+            <span class="material-symbols-outlined icon">
+                menu
+            </span>
+        </div>
+        <div class="menu">
+            <div class="menu_title">
+                <span>Menu </span>
+                <div class="close_menu">
+                    <span class="material-symbols-outlined  icon ">
+                        close
                     </span>
-            </button>
-            <button id="btn_cancel" type="button" class="hide btn_cancel">
-                <span class="material-symbols-outlined">
-                    close
-                    </span>
-            </button>
-           </div>
-        </form>
-        <div class="bar">
-            <a href="#">Pokemón</a>
-            <a href="#">Ataques</a>
-            <a href="#">Bayas</a>
+                </div>
+            </div>
+            <hr>
+            <div class="content_menu_mobile">
 
+            </div>
         </div>
     </header>
     <div class="container">
         <!-- Aqui van todos los pokemones-->
+    </div>
+    <div id="container2" class="hide container2">
+        <!--Pokemon no encontrado-->
     </div>
 
     <div class="container_dialg">

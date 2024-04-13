@@ -1,9 +1,10 @@
 // Importando el resto de archivos js
 
-export const container = document.querySelector(".container");
+const container = document.querySelector(".container");
+const container2 = document.getElementById("container2")
 var load = true;
 const container_dialg = document.querySelector(".container_dialg")
-export var position = 0
+var position = 0
 
 // Esta funcion permite carga mas pokemones a partir de la posicion actual 
 const loadMore = (entries) => {
@@ -58,7 +59,7 @@ const getPokemon = (urlImg, num, name) => {
 
     return pokemon
 }
-const capitaliceFirstLetter = (str)=>{
+const capitaliceFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -152,48 +153,86 @@ const btn_submit = formSearch.elements["btn_submit"];
 const btn_cancel = document.getElementById("btn_cancel");
 
 // Agregar el evento de submit al formulario
-formSearch.addEventListener("submit", (e)=>{
+formSearch.addEventListener("submit", (e) => {
     e.preventDefault();
     doSearch();
     showCancel();
 
 })
 
-btn_cancel.addEventListener("click",()=>{
-    container.innerHTML="";
+btn_cancel.addEventListener("click", () => {
     showSubmit();
-    firstLoad();
+    showContainer();
+    input_search.value = "";
 })
 
-const doSearch = ()=>{
+const doSearch = () => {
     var text = input_search.value;
-    if(text && text.trim().length > 0){
-        
-        container.innerHTML = "";
+    if (text && text.trim().length > 0) {
+        showContainer2();
+        container2.innerHTML = "";
         position = 0;
-    console.log(text)
-    const url = `https://pokeapi.co/api/v2/pokemon/${text.toLowerCase()}/`
-    axios.get(url).then((response)=>{
-        const data = response.data
-        console.log(data)
-        container.appendChild(getPokemon(url, data.id, data.name));
-        loadImg();
-        addEventDialg();
-    }).catch((err)=>{
-        container.innerHTML = `
-        <span style=" font-size: 40px; margin: auto;">Pokemon no encontrado 😓</span>
-        `
-    });
-    
-}
+        console.log(text)
+        const url = `https://pokeapi.co/api/v2/pokemon/${text.toLowerCase()}/`
+        axios.get(url).then((response) => {
+            const data = response.data
+            console.log(data)
+            container2.appendChild(getPokemon(url, data.id, data.name));
+            loadImg();
+            addEventDialg();
+        }).catch((err) => {
+            container2.innerHTML = `
+            <span style=" font-size: 40px; margin: auto;">Pokemon no encontrado 😓</span>
+            `
+        });
+
+    }
 }
 
-const showSubmit = ()=>{
+const showSubmit = () => {
     btn_submit.classList.remove("hide");
     btn_cancel.classList.add("hide");
 }
 
-const showCancel = ()=>{
+const showCancel = () => {
     btn_submit.classList.add("hide");
     btn_cancel.classList.remove("hide");
 }
+
+const showContainer = () => {
+    container2.classList.add("hide");
+    container.classList.remove("hide");
+}
+const showContainer2 = () => {
+    container2.classList.remove("hide");
+    container.classList.add("hide");
+}
+
+
+const menu = document.querySelector(".menu");
+const menu_burger = document.querySelector(".menu_burger")
+
+menu_burger.addEventListener("click",(e)=>{
+    menu.classList.add("menu_appear")
+})
+
+const close_menu = document.querySelector(".close_menu");
+close_menu.addEventListener("click", ()=>{
+    menu.classList.remove("menu_appear")
+})
+const content_menu = document.querySelector(".container_menu")
+
+const content_menu_mobile = document.querySelector(".content_menu_mobile")
+const handleResize = (mq)=> {
+    if(mq.matches){
+        content_menu_mobile.appendChild(document.getElementById("barSearch_form"))
+        content_menu_mobile.appendChild(document.querySelector(".bar"))
+    }else{
+        content_menu.appendChild(document.getElementById("barSearch_form"))
+        content_menu.appendChild(document.querySelector(".bar"))
+    }
+}
+const mediaQueryMobile = window.matchMedia("(max-width:900px");
+
+handleResize(mediaQueryMobile);
+mediaQueryMobile.addEventListener("change", handleResize)
