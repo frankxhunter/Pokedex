@@ -6,6 +6,8 @@ var load = true;
 const container_dialg = document.querySelector(".container_dialg")
 var position = 0
 
+const pokemonsWithoutImages = [];
+
 // Esta funcion permite carga mas pokemones a partir de la posicion actual 
 const loadMore = (entries) => {
     load = false
@@ -57,6 +59,9 @@ const getPokemon = (urlImg, num, name) => {
     img.setAttribute("src", "source/pokeball.png")
     img.setAttribute("alt", urlImg);
 
+    // Agregar imagen a la lista de pokemones sin imagenes
+    pokemonsWithoutImages.push(img)
+
     return pokemon
 }
 const capitaliceFirstLetter = (str) => {
@@ -87,9 +92,9 @@ firstLoad();
 // Realiza la carga 
 // TODO corregir que no carge todo desde el principio
 const loadImg = async () => {
-    const img_pokemons = document.querySelectorAll(".img_pokemon");
+    //const img_pokemons = document.querySelectorAll(".img_pokemon");
 
-    img_pokemons.forEach((element) => {
+    pokemonsWithoutImages.forEach((element) => {
         axios.get(element.alt).then(response => {
             element.src = (response.data.sprites.other.dream_world.front_default)
             load = true
@@ -232,7 +237,7 @@ const handleResize = (mq)=> {
         content_menu.appendChild(document.querySelector(".bar"))
     }
 }
-const mediaQueryMobile = window.matchMedia("(max-width:900px");
+const mediaQueryMobile = window.matchMedia("(max-width:1200px");
 
 handleResize(mediaQueryMobile);
 mediaQueryMobile.addEventListener("change", handleResize)
